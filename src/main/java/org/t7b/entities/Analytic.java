@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "analytics")
 @Getter
@@ -34,5 +36,8 @@ public class Analytic {
         this.totalTheses = totalTheses;
         this.dbUsageMb = dbUsageMb;
         this.s3UsageMb = s3UsageMb;
+    }
+    
+    public Analytic(String totalUsers, long total, Instant now) {
     }
 }

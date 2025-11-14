@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ManyToAny;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ThesesRepository {
+public class ThesisExample {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "thesis_id")
@@ -35,7 +34,7 @@ public class ThesesRepository {
     
     private LocalDateTime uploaded = LocalDateTime.now();
     
-    public ThesesRepository(Long thesisId, String thesisLink, User approvedBy, User author, String title, int grade, LocalDateTime uploaded) {
+    public ThesisExample(Long thesisId, String thesisLink, User approvedBy, User author, String title, int grade, LocalDateTime uploaded) {
         this.thesisId = thesisId;
         this.thesisLink = thesisLink;
         this.approvedBy = approvedBy;

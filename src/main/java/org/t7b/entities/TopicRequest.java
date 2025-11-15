@@ -26,6 +26,10 @@ public class TopicRequest {
     @JoinColumn(name = "student_id")
     private User student;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
+    private StudentClass studentClass;
+    
     private String message;
     private String status;
     

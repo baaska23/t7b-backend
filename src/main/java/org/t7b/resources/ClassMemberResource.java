@@ -68,13 +68,13 @@ public class ClassMemberResource {
         return classMemberRepository.findByClassId(classId);
     }
     
-    @DELETE
-    @Path("/{classId}/{studentId}")
-    @Transactional
-    public Response leaveClass(@PathParam("classId") Long classId, @PathParam("studentId") Long studentId) {
-        ClassMemberId id = new ClassMemberId(classId, studentId);
-        ClassMember classMember = classMemberRepository.findById(id);
-        classMemberRepository.delete(classMember);
-        return Response.noContent().build();
-    }
+//    @DELETE
+//    @Path("/{classId}/{studentId}")
+//    @Transactional
+//    public Response leaveClass(@PathParam("classId") Long classId, @PathParam("studentId") Long studentId) {
+//        ClassMemberId id = new ClassMemberId(classId, studentId);
+//        ClassMember classMember = classMemberRepository.findById(id);
+//        classMemberRepository.delete(classMember);
+//        return Response.noContent().build();
+//    }
 }

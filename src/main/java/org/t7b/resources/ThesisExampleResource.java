@@ -3,6 +3,7 @@ package org.t7b.resources;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
 import org.t7b.dto.ThesisExampleDTO;
 import org.t7b.entities.ThesisExample;
 import org.t7b.entities.User;
@@ -57,5 +58,14 @@ public class ThesisExampleResource {
         ThesisExample thesisExample = thesisExampleRepository.findById(id);
         thesisExampleRepository.delete(thesisExample);
         return thesisExample;
+    }
+    
+    @POST
+    @Transactional
+    @Path("/{thesisId}/rate")
+    public Response rate(@PathParam("thesisId") Long thesisId, @QueryParam("grade") Integer grade) {
+        ThesisExample thesisExample = thesisExampleRepository.findById(thesisId);
+        thesisExample.setGrade(grade);
+        return Response.ok(thesisExample).build();
     }
 }

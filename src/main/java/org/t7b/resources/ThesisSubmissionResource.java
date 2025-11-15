@@ -57,4 +57,9 @@ public class ThesisSubmissionResource {
         return thesisSubmission;
     }
     
+    @GET
+    @Path("/history/{studentId}")
+    public List<ThesisSubmission> getHistory(@PathParam("studentId") Long studentId) {
+        return thesisSubmissionRepository.getHistory(studentId);
+    }
 }

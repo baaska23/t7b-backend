@@ -31,12 +31,20 @@ public class Guidance {
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
     
-    public Guidance(Long guidanceId, String title, String content, User uploadedBy, boolean isRead, LocalDateTime createdAt) {
+    @Column(name = "like_count")
+    private int likeCount;
+    
+    @Column(name = "dislike_count")
+    private int dislikeCount;
+    
+    public Guidance(Long guidanceId, String title, String content, User uploadedBy, boolean isRead, LocalDateTime createdAt, int likeCount, int dislikeCount) {
         this.guidanceId = guidanceId;
         this.title = title;
         this.content = content;
         this.uploadedBy = uploadedBy;
         this.isRead = isRead;
         this.createdAt = createdAt;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
     }
 }

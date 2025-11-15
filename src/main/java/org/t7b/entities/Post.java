@@ -35,7 +35,13 @@ public class Post {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
-    public Post(Long postId, User author, StudentClass aClass, String content, String type, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    @Column(name = "like_count")
+    private int likeCount;
+    
+    @Column(name = "dislike_count")
+    private int dislikeCount;
+    
+    public Post(Long postId, User author, StudentClass aClass, String content, String type, LocalDateTime createdAt, LocalDateTime updatedAt, int likeCount, int dislikeCount) {
         this.postId = postId;
         this.author = author;
         this.aClass = aClass;
@@ -43,5 +49,7 @@ public class Post {
         this.type = type;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
     }
 }

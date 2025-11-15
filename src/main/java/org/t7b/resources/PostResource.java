@@ -4,6 +4,7 @@ import jakarta.decorator.Delegate;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
 import org.t7b.dto.PostDTO;
 import org.t7b.entities.Post;
 import org.t7b.entities.StudentClass;
@@ -81,5 +82,38 @@ public class PostResource {
         Post post = postRepository.findById(id);
         postRepository.delete(post);
         return post;
+    }
+    
+    @POST
+    @Transactional
+    @Path("/{postId}/like")
+    public Response like(@PathParam("postId") Long postId) {
+        Post post = postRepository.findById(postId);
+        post.setLikeCount(post.getLikeCount() + 1);
+        return Response.noContent().build();
+    }
+    
+    @POST
+    @Transactional
+    @Path("/{postId}/dislike")
+    public Response dislike(@PathParam("postId") Long postId) {
+        Post post = postRepository.findById(postId);
+        post.setDislikeCount(post.getDislikeCount() + 1);
+        return Response.noContent().build();
+    }
+    
+    @POST
+    @Transactional
+    @Path("/{postId}/undo/{likeType}")
+    public Response undo(@PathParam("postId") Long postId, @PathParam("likeType") String likeType) {
+        Post post = postRepository.findById(postId);
+        if ("like".equals(likeType)) {
+            post.setLikeCount(Math.max(0, post.getLikeCount() - 1));
+        } else if ("dislike".equals(likeType)) {
+            post.setDislikeCount(Math.max(0, post.getDislikeCount() - 1));
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.noContent().build();
     }
 }

@@ -3,7 +3,9 @@ package org.t7b.resources;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
 import org.t7b.dto.ClassMemberDTO;
+import org.t7b.embeddable.ClassMemberId;
 import org.t7b.entities.ClassMember;
 import org.t7b.entities.StudentClass;
 import org.t7b.entities.User;
@@ -58,5 +60,21 @@ public class ClassMemberResource {
         ClassMember classMember = classMemberRepository.findById(id);
         classMemberRepository.delete(classMember);
         return classMember;
+    }
+    
+    @GET
+    @Path("/{id}/all-students")
+    public List<ClassMember> getAllStudents(@PathParam("id") Long classId) {
+        return classMemberRepository.findByClassId(classId);
+    }
+    
+    @DELETE
+    @Path("/{classId}/{studentId}")
+    @Transactional
+    public Response leaveClass(@PathParam("classId") Long classId, @PathParam("studentId") Long studentId) {
+        ClassMemberId id = new ClassMemberId(classId, studentId);
+        ClassMember classMember = classMemberRepository.findById(id);
+        classMemberRepository.delete(classMember);
+        return Response.noContent().build();
     }
 }

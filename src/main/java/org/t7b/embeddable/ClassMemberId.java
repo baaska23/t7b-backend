@@ -10,4 +10,7 @@ public class ClassMemberId {
     
     @Column(name = "student_id")
     private Long studentId;
+    
+    public ClassMemberId(Long classId, Long studentId) {
+    }
 }

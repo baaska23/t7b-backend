@@ -31,6 +31,12 @@ public class StudentClassResource {
         return studentClassRepository.findById(id);
     }
     
+    @GET
+    @Path("/professor/{id}")
+    public List<StudentClass> getByProfessorId(@PathParam("id") Long id) {
+        return studentClassRepository.findByProfessorId(id);
+    }
+    
     @POST
     @Transactional
     public StudentClass create(StudentClassDTO studentClassInput) {

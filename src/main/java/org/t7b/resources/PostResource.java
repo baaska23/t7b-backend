@@ -39,6 +39,12 @@ public class PostResource {
         return postRepository.findById(id);
     }
     
+    @GET
+    @Path("/class/{id}")
+    public List<Post> getByClassId(@PathParam("id") Long id) {
+        return postRepository.findByClassId(id);
+    }
+    
     @POST
     @Transactional
     public Post create(PostDTO postInput) {

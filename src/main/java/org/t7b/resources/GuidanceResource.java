@@ -27,6 +27,7 @@ public class GuidanceResource {
         return guidanceRepository.listAll();
     }
     
+    @GET
     @Path("/{id}")
     public Guidance getById(@PathParam("id") Long id) {
         return guidanceRepository.findById(id);

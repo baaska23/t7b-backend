@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ThesisSubmissionDTO {
     private Long studentId;
-    private Long topicId;
+    private Long topicId; 
     private int version;
     private String thesisLink;
     private String feedback;

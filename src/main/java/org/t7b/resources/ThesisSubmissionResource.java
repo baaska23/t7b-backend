@@ -17,7 +17,7 @@ import org.t7b.repositories.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Path("/api/thesis-submissions")
+@Path("/api/theses-submissions")
 public class ThesisSubmissionResource {
     @Inject
     ThesisSubmissionRepository thesisSubmissionRepository;

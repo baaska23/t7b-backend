@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.t7b.dto.TemplateDTO;
 import org.t7b.dto.TemplateUploadForm;
 import org.t7b.entities.Template;
@@ -34,6 +35,9 @@ public class TemplateResource {
     
     @Inject
     S3Service s3Service;
+    
+    @Inject
+    @ConfigProperty(name = "quarkus.s3.aws.public-dev-url") String devUrl;
     
     @GET
     public List<Template> getAll() {
@@ -102,9 +106,7 @@ public class TemplateResource {
                     .build();
         }
         
-        String objectKey = "templates/"
-                + UUID.randomUUID()
-                + "_" + form.fileName;
+        String objectKey = "templates/" + UUID.randomUUID() + "_" + form.fileName;
         
         s3Service.upload(
                 objectKey,
@@ -113,7 +115,8 @@ public class TemplateResource {
                 form.contentType
         );
         
-        String fileUrl = objectKey;
+        String base = devUrl != null && devUrl.endsWith("/") ? devUrl.substring(0, devUrl.length() - 1) : devUrl;
+        String fileUrl = base + "/" + objectKey;
         
         Template template = new Template();
         template.setUploadedBy(user);
@@ -125,6 +128,48 @@ public class TemplateResource {
         
         return Response.created(URI.create(fileUrl))
                 .entity(template)
+                .build();
+    }
+    
+    @GET
+    @Path("/open/{id}")
+    @Produces("application/pdf")
+    public Response openTemplate(@PathParam("id") Long id) {
+        Template template = templateRepository.findById(id);
+        if (template == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Template not found")
+                    .build();
+        }
+        
+        String objectKey = template.getTemplateLink();
+        byte[] fileData = s3Service.download(objectKey);
+        
+        return Response.ok(fileData)
+                .header("Content-Disposition",
+                        "inline; filename=\"" + template.getTitle() + ".pdf\"")
+                .header("Content-Type", "application/pdf")
+                .build();
+    }
+    
+    @GET
+    @Path("/download/{id}")
+    @Produces("application/pdf")
+    public Response downloadTemplate(@PathParam("id") Long id) {
+        Template template = templateRepository.findById(id);
+        if (template == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Template not found")
+                    .build();
+        }
+        
+        String objectKey = template.getTemplateLink();
+        byte[] fileData = s3Service.download(objectKey);
+        
+        return Response.ok(fileData)
+                .header("Content-Disposition",
+                        "attachment; filename=\"" + template.getTitle() + ".pdf\"")
+                .header("Content-Type", "application/pdf")
                 .build();
     }
 }
